@@ -37,7 +37,7 @@ table:hover{
 }
 table {
     transition: transform 300ms ease-in-out;
-    box-shadow: 0 5px 30px #101013;
+    /* box-shadow: 0 5px 30px #101013; */
     color: #ffffff;
     /* margin-bottom: 12px; */
     border-spacing: 0px;

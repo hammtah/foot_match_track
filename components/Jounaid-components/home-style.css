@@ -122,6 +122,119 @@ body {
 
 }
 
+.main_card.stats{
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  flex-direction: column;
+}
+.player-stats{
+  /* justify-content: center; */
+  /* row-gap: ; */
+  gap: 39px;
+  display: flex;
+  /* margin-top: 0px; */
+  /* padding: ; */
+  /* margin-top: 1em; */
+  
+}
+.stat{
+  text-align: center;
+  /* font-size: xx-large; */
+  /* fonrsizet-size: 20px; */
+  font-size: 2.5em;
+  /* margin-bottom: 12px;
+  padd */
+  /* padding-bottom: ; */
+
+}
+.stats-under{
+  font-size: 20px;
+  text-align: center;
+  /* text-wrap: ; */
+
+  color: #9f9f9f;
+}
+.next-game{
+  /* border: 1px solid #9f9f9f; */
+  border-radius: 12px;
+  padding-top: 1.5%;
+  padding-bottom: 1.5%;
+  
+  text-align: center;
+  font-size: 25px;
+  
+
+}
+.next-game > *{
+  /* font-size: 20px; */
+  /* /color: #D6A243; */
+  /* margin: 0px; */
+  margin: 2px;
+}
+
+.separator{
+  /* font-family: ; */
+  border: 1px solid #d6a243;
+  /* padding: ; */
+  margin: 0px;
+  width: 80%;
+  /* margin: px; */
+}
+.match-table{
+  margin-top: 15px;
+  margin-bottom: 15px;
+  /* flex-grow: a */
+  /* width: 100%;width: auto; */
+  width: 100%;
+  font-size: 15px;
+  border-spacing: 0px;
+  /* width: ; */
+
+  margin-left: 18px;
+}
+  /* width: fit-content; */
+.tabel-container{
+  /* flex-grow: ; */
+  width: 100%;
+}
+
+.table-row:hover{
+  background-color: #D6A243;
+  color: #ffffff;
+  box-shadow: 0 0px 12px #D6A243;
+  /* transition: background-color 300ms ease-in-out;     */
+  border-radius: 8px ;
+  /* transition: border-radius 300ms ease-in-out; */
+}
+
+.table-header{
+  /* background-color: #2ecc71; */
+  /* border-color: #e74c3c; */
+  /* border: 213px solid #e74c3c; */
+  /* padding: 122322322323px; */
+  /* margin-bottom: px; */
+  position: relative;
+  bottom: 12px;;
+  
+  
+  /* margin-left: 1222px; */
+  text-align: left;
+  /* background-color: #2ecc71; */
+  color:#d6a243 ;
+}
+.png-teams{
+  width:25px;
+   position: relative;
+   top: -1px;
+    left: 3px;
+     vertical-align: middle;
+  
+ 
+}
+table{
+  /* border-spacing: 0px; */
+}
 /* Container for the "Last Five Matches" section */
 .last-five-matches {
     /* Optional glass effect */
