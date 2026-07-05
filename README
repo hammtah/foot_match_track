@@ -1,0 +1,110 @@
+# Foot Match Track
+
+A PHP web app for tracking Moroccan football (BOTOLA): match results, standings, upcoming fixtures, team/player pages, and admin tools for tournaments.
+
+Uses **PHP 8+** and **SQLite** — no MySQL or separate database server required.
+
+## Screenshots
+
+### Home — latest results & upcoming hero
+
+![Home page](public/images/foot_home.png)
+
+### Upcoming matches & countdown
+
+![Upcoming matches](public/images/foot_upcoming.png)
+
+### Match details
+
+![Match details](public/images/match_details.png)
+
+### Standings 
+
+![Classement](public/images/classement.png)
+
+### Admin dashboard
+
+![Admin dashboard](public/images/foot_admin.png)
+
+## Requirements
+
+- PHP 8.0+ with extensions: `pdo_sqlite`, `sqlite3`
+- A web browser
+
+## Quick start
+
+```bash
+cd foot_match_track
+php -S localhost:8000
+```
+
+Open [http://localhost:8000](http://localhost:8000) — you are redirected to the login page.
+
+The SQLite database is created automatically on first run at `database/football.db` and seeded from `my_db.sql`.
+
+## Test accounts
+
+| Email | Password | Role |
+|-------|----------|------|
+| `alice@example.com` | `1` | General admin (`g`) |
+| `thomas@example.com` | `motdepasse3` | Tournament admin (`t`) |
+
+You can also register a normal user from the sign-up form on the auth page.
+
+## Main pages
+
+| URL | Description |
+|-----|-------------|
+| `/auth/auth.php` | Login / sign up |
+| `/home/home.php` | Home — latest & upcoming matches, follow teams |
+| `/match/match-details.php?match_id=30` | Match details, stats, comments, poll |
+| `/admin-general/index.php` | General admin (teams, players, tournaments, …) |
+| `/admin-tournoi/admin-tournaments.php` | Tournament admin (matches, lineups, goals) |
+| `/teams/team-info.php?idTeam=17` | Team profile |
+
+## Project structure
+
+```
+foot_match_track/
+├── public/images/       # README screenshots
+├── assets/              # Team logos, UI icons
+├── auth/                # Login & registration
+├── home/                # Main user home page
+├── match/               # Match details & comments
+├── teams/               # Team pages
+├── player/              # Player pages
+├── admin-general/       # General admin panel
+├── admin-tournoi/       # Tournament admin panel
+├── includes/            # DB connection, header, classement, …
+├── database/
+│   ├── football.db      # SQLite DB (auto-generated, gitignored)
+│   ├── schema.sql
+│   └── init.php         # Schema + seed + upcoming-match patch
+└── my_db.sql            # Original MySQL seed (imported into SQLite)
+```
+
+## Database
+
+Connection is configured in `includes/db.php` (SQLite file: `database/football.db`).
+
+To reset the database:
+
+```bash
+rm database/football.db
+# Restart the server — DB is recreated and re-seeded
+```
+
+If all match dates are in the past, `ensureUpcomingMatches()` in `database/init.php` automatically schedules demo fixtures for the next days so the home page hero and “Coming Match” tab stay populated.
+
+## Features (overview)
+
+- **Visitors / users:** Browse matches, standings, teams, and players
+- **Premium (planned):** Follow teams, notifications, match polls, live comments
+- **General admin:** Manage teams, players, stadiums, referees, publications, tournament admins
+- **Tournament admin:** Schedule matches, enter scores, stats, and lineups
+
+See `Product-Backlog.md` and `Sprint-1-backlog.md` for the full product backlog.
+
+## License
+
+Academic / project use — see repository owner for terms.
