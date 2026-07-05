@@ -105,6 +105,11 @@ If all match dates are in the past, `ensureUpcomingMatches()` in `database/init.
 
 See `Product-Backlog.md` and `Sprint-1-backlog.md` for the full product backlog.
 
+## Contributors
+
+- [Taha Hammadate](https://github.com/hammtah)
+- [Jounaid Ayoub](https://github.com/Jounaidayoub)
+
 ## License
 
 Academic / project use — see repository owner for terms.
