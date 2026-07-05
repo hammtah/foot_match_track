@@ -390,7 +390,7 @@
                 <a href="" class="link" >
                     Equipes
                 </a>
-                <a href=" ../match/match-details.php" class="link" >
+                <a href="../home/home.php" class="link" >
                     Matches
                 </a>
                 <a href="faq.jsp" class="link">
@@ -613,10 +613,10 @@
             let link = "#"; // Default link if no match found
             switch (eventType) {
                 case "match":
-                    link = `http://localhost/foot_match_track/match/match-details.php?match_id=${eventId}`;
+                    link = `../match/match-details.php?match_id=${eventId}`;
                     break;
                 case "team":
-                    link = `http://localhost/foot_match_track/teams/team-info.php?idTeam=${eventId}`;
+                    link = `../teams/team-info.php?idTeam=${eventId}`;
                     break;
                 default:
                     break;

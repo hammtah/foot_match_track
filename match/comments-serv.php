@@ -12,7 +12,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
     echo("idmatch: " . $id_match);
     if (isset($id_match) && isset($comment) && isset($id_user) && !empty($comment)) {
         try {
-            $sql = "INSERT INTO comments (id_match, comment, id_user, date_comment) VALUES (:id_match, :comment, :id_user, NOW())";
+            $sql = "INSERT INTO comments (id_match, comment, id_user, date_comment) VALUES (:id_match, :comment, :id_user, CURRENT_TIMESTAMP)";
             $stmt = $bd->prepare($sql);
             $stmt->execute([
                 'id_match' => $id_match,

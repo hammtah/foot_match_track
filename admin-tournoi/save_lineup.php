@@ -5,9 +5,7 @@ header('Content-Type: application/json');
 require_once '../includes/db.php';
 
 try {
-    // Create connection
-    $conn = new PDO("mysql:host=$host;dbname=$dbname", $user, $password);
-    // Set the PDO error mode to exception
+    $conn = $bd;
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
     // Get data from the request

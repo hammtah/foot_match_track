@@ -319,7 +319,6 @@
         </button>
     </div>
     
-    <?php print_r($_SESSION) ?>
     <?php if (isset($_SESSION['id'])): ?>
         <form class="text-box" action="#" method="POST" id="comment-form">
             <div class="box-container">

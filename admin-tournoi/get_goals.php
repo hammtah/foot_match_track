@@ -17,8 +17,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                 b.id_team as team_id, b.id_buteur as player_id, 
                 b.id_assisteur as assist_player_id, b.minute as goal_time, 
                 b.goal_type,
-                CONCAT(scorer.first_name, ' ', scorer.last_name) AS scorer_name,
-                CONCAT(assister.first_name, ' ', assister.last_name) AS assist_name
+                (scorer.first_name || ' ' || scorer.last_name) AS scorer_name,
+                (assister.first_name || ' ' || assister.last_name) AS assist_name
                 FROM but b
                 LEFT JOIN players scorer ON b.id_buteur = scorer.id
                 LEFT JOIN players assister ON b.id_assisteur = assister.id

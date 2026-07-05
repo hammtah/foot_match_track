@@ -10,7 +10,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         exit;
     }
 
-    $sql = "SELECT p.id, c.num_maillot as number, CONCAT(p.first_name, ' ', p.last_name) AS full_name, pos.position_name as position 
+    $sql = "SELECT p.id, c.num_maillot as number, (p.first_name || ' ' || p.last_name) AS full_name, pos.position_name as position 
             FROM players p
             INNER JOIN composer c ON p.id = c.id_player
             INNER JOIN player_position pos ON c.id_position = pos.id

@@ -1,6 +1,6 @@
 console.log("hello")
 async function getData(query){
-    let result = await fetch(`http://localhost/foot_match_track/includes/search-serv.php?query=${query}`, {
+    let result = await fetch(`../includes/search-serv.php?query=${query}`, {
     method: "GET",
     headers: {
         "Content-Type": "application/x-www-form-urlencoded"

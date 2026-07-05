@@ -2,7 +2,12 @@
 //check for session
 session_start();
 
-$match_id = $_GET['match_id'];
+$match_id = isset($_GET['match_id']) ? (int) $_GET['match_id'] : null;
+
+if (!$match_id) {
+    header('Location: ../home/home.php');
+    exit;
+}
 
 // Fetch the tournament ID for the current match
 require_once '../includes/db.php'; // Ensure DB connection is included

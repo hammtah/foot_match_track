@@ -1,19 +1,11 @@
 <?php
-// Add this at the top of team.php
-try {
-    // Database connection
-    $dsn = 'mysql:host=localhost;dbname=football_db';
-    $username = 'root';
-    $password = '';
-    $options = [
-        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-        PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-    ];
+require_once __DIR__ . '/../includes/db.php';
 
-    $pdo = new PDO($dsn, $username, $password, $options);
+try {
+    $pdo = $bd;
 
     // Fetch all players for player selection
-    $stmt = $pdo->query("SELECT p.id, CONCAT(p.first_name, ' ', p.last_name) as player_name, pos.position_name 
+    $stmt = $pdo->query("SELECT p.id, (p.first_name || ' ' || p.last_name) as player_name, pos.position_name 
                          FROM players p 
                          LEFT JOIN player_position pos ON p.id_position = pos.id 
                          ORDER BY p.last_name");

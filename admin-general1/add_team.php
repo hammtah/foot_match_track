@@ -1,15 +1,8 @@
 <?php
-try {
-    // Database connection
-    $dsn = 'mysql:host=localhost;dbname=football_db';
-    $username = 'root';
-    $password = '';
-    $options = [
-        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-        PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-    ];
+require_once __DIR__ . '/../includes/db.php';
 
-    $pdo = new PDO($dsn, $username, $password, $options);
+try {
+    $pdo = $bd;
 
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Prepare and bind

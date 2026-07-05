@@ -125,10 +125,7 @@ function getLatestMatches($tournament_id, $limit = 30)
             GROUP BY id_match, id_team
         ) s2 ON m.id_match = s2.id_match AND m.id_equipe2 = s2.id_team
         WHERE m.tournament_id = :tournament_id
-        AND (
-            m.date_match < CURRENT_DATE OR 
-            (m.date_match = CURRENT_DATE AND m.time_match < (CURRENT_TIME + INTERVAL 3 HOUR))
-        )
+        AND datetime(m.date_match || ' ' || m.time_match) <= datetime('now', '+3 hours')
         ORDER BY m.date_match DESC, m.time_match ASC
         LIMIT :limit
     ";
@@ -175,10 +172,7 @@ function getComingMatches($id_tournoi, $limit = 10)
         JOIN teams t1 ON m.id_equipe1 = t1.id
         JOIN teams t2 ON m.id_equipe2 = t2.id
         WHERE m.tournament_id = :id_tournoi
-        AND (
-            m.date_match > CURRENT_DATE 
-            OR (m.date_match = CURRENT_DATE AND m.time_match > CURRENT_TIME)
-        )
+        AND datetime(m.date_match || ' ' || m.time_match) > datetime('now')
         ORDER BY m.date_match ASC, m.time_match ASC
         LIMIT :limit
     ";
@@ -259,15 +253,24 @@ foreach ($tournaments as $tournament) {
           <?php $comingMatches = $matchData['comingMatches']; ?>
           <?php if (!empty($comingMatches)): ?>
             <?php $closestMatch = $comingMatches[0]; ?>
-            <div class="slide fade">
+            <?php
+              $matchTitle = trim($closestMatch['Nom_match'] ?? '');
+              if ($matchTitle === '') {
+                $matchTitle = $closestMatch['team1_name'] . ' vs ' . $closestMatch['team2_name'];
+              }
+              $kickoff = $closestMatch['date_match'] . 'T' . $closestMatch['time_match'];
+            ?>
+            <div class="slide fade" data-kickoff="<?= htmlspecialchars($kickoff) ?>">
               <h2 class="tournament-name">🏆 <?= $matchData['tournament']['tournament_name'] ?></h2>
-              <img src="../assets/<?= $closestMatch["team1_logo"] ?>" alt="" class="team-logo">
+              <img src="../assets/<?= $closestMatch["team1_logo"] ?>" alt="<?= htmlspecialchars($closestMatch['team1_name']) ?>" class="team-logo">
               <div class="info">
-                <h2 class="info-match-name"><?= $closestMatch["Nom_match"] ?></h2>
+                <h2 class="info-match-name"><?= htmlspecialchars($matchTitle) ?></h2>
                 <h2 class="info-match-date"><?= $closestMatch["date_match"] ?></h2>
-                <h2 class="info-match-time"><?= $closestMatch["time_match"] ?></h2>
+                <h2 class="info-match-time"><?= substr($closestMatch["time_match"], 0, 5) ?></h2>
+                <p class="info-countdown-label">Time left</p>
+                <h2 class="info-countdown countdown-value">--:--:--</h2>
               </div>
-              <img src="../assets/<?= $closestMatch["team2_logo"] ?>" alt="" class="team-logo">
+              <img src="../assets/<?= $closestMatch["team2_logo"] ?>" alt="<?= htmlspecialchars($closestMatch['team2_name']) ?>" class="team-logo">
             </div>
           <?php endif; ?>
         <?php endforeach; ?>
@@ -541,7 +544,7 @@ function getLatestMatches(){
               <time class="match-date"><?= $match['date_match'] ?></time>
             </div>
             <div class="match-icons">
-              <a href="http://localhost/foot_match_track/match/match-details.php?match_id=<?= $match['id_match'] ?>" class="icon-button" aria-label="Match Information">
+              <a href="../match/match-details.php?match_id=<?= $match['id_match'] ?>" class="icon-button" aria-label="Match Information">
                 <svg
                   class="info-icon"
                   width="24"
@@ -562,8 +565,18 @@ function getLatestMatches(){
 
       <!-- Coming Matches Section -->
       <section class="matches hidden" id="coming-matches-<?= $tournament['id'] ?>">
+        <?php if (empty($comingMatches)): ?>
+          <p class="empty-matches">No upcoming matches scheduled.</p>
+        <?php endif; ?>
         <?php foreach ($comingMatches as $match): ?>
-          <article class="match">
+          <?php
+            $matchTitle = trim($match['Nom_match'] ?? '');
+            if ($matchTitle === '') {
+              $matchTitle = $match['team1_name'] . ' vs ' . $match['team2_name'];
+            }
+            $kickoff = $match['date_match'] . 'T' . $match['time_match'];
+          ?>
+          <article class="match" data-kickoff="<?= htmlspecialchars($kickoff) ?>">
             <div class="team-section">
               <a href="../teams/team-info.php?idTeam=<?= $match['id_team1'] ?>" class="team">
                 <img src="../assets/<?= $match['team1_logo'] ?>" alt="<?= $match['team1_name'] ?>" class="team-flag" />
@@ -577,11 +590,11 @@ function getLatestMatches(){
             </div>
             <div class="match-status">Upcoming</div>
             <div class="match-info">
-              <time class="match-date"><?= $match['date_match'] ?></time>
-              <!-- <time class="match-time"><?= $match['time_match'] ?></time> -->
+              <time class="match-date"><?= $match['date_match'] ?> · <?= substr($match['time_match'], 0, 5) ?></time>
+              <p class="match-countdown countdown-value">--:--:--</p>
             </div>
             <div class="match-icons">
-              <a href="http://localhost/foot_match_track/match/match-details.php?match_id=<?= $match['id_match'] ?>" class="icon-button" aria-label="Match Information">
+              <a href="../match/match-details.php?match_id=<?= $match['id_match'] ?>" class="icon-button" aria-label="Match Information">
                 <svg
                   class="info-icon"
                   width="24"
@@ -715,6 +728,31 @@ function getLatestMatches(){
       });
       event.target.classList.add("active");
     }
+
+    function updateMatchCountdowns() {
+      document.querySelectorAll("[data-kickoff] .countdown-value").forEach((countdownEl) => {
+        const container = countdownEl.closest("[data-kickoff]");
+        const target = new Date(container.dataset.kickoff);
+        if (Number.isNaN(target.getTime())) {
+          return;
+        }
+
+        const diff = target - Date.now();
+        if (diff <= 0) {
+          countdownEl.textContent = "Starting soon";
+          return;
+        }
+
+        const days = Math.floor(diff / 86400000);
+        const hours = Math.floor((diff % 86400000) / 3600000);
+        const mins = Math.floor((diff % 3600000) / 60000);
+        const secs = Math.floor((diff % 60000) / 1000);
+        countdownEl.textContent = `${days}d ${hours}h ${mins}m ${secs}s`;
+      });
+    }
+
+    updateMatchCountdowns();
+    setInterval(updateMatchCountdowns, 1000);
   </script>
 </body>
 

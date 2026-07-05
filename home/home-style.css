@@ -87,6 +87,26 @@
     font-size: 1rem;
     color: #14ff00;
 }
+.info-countdown-label {
+    font-size: 0.9rem;
+    color: #c8c8c8;
+    font-weight: 500;
+    margin-top: 4px;
+}
+.info-countdown {
+    font-size: 1.5rem;
+    color: #14ff00;
+    letter-spacing: 0.05em;
+}
+.match-countdown {
+    margin-top: 6px;
+    color: #14ff00;
+    font-weight: 600;
+}
+.empty-matches {
+    color: #A4A4A4;
+    padding: 1rem 0;
+}
 
   .stats-section {
     display: flex;

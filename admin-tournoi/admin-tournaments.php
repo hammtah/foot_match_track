@@ -624,7 +624,7 @@ $tournaments = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                 <select id="match-referee" required>
                                     <option value="">Select a referee</option>
                                     <?php
-                                    $sql = "SELECT id, CONCAT(prenom, ' ', nom) AS full_name FROM refree WHERE status = 'actif' ORDER BY nom, prenom";
+                                    $sql = "SELECT id, (prenom || ' ' || nom) AS full_name FROM refree WHERE status = 'actif' ORDER BY nom, prenom";
                                     $stmt = $bd->prepare($sql);
                                     $stmt->execute();
                                     $referees = $stmt->fetchAll(PDO::FETCH_ASSOC);

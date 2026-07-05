@@ -21,7 +21,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $users = getMatchFollowers($match_id);
             //insert notif for match followers
             foreach ($users as $user) {
-                $sql = "INSERT INTO notif (msg, event_id, event_type, date_notif, id_user) VALUES (:msg, :event_id, 'match', NOW(), :id_user)";
+                $sql = "INSERT INTO notif (msg, event_id, event_type, date_notif, id_user) VALUES (:msg, :event_id, 'match', CURRENT_TIMESTAMP, :id_user)";
                 $stmt = $bd->prepare($sql);
                 $stmt->execute([
                     ':msg' => $message,
@@ -75,10 +75,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             ) s2 ON m.id_match = s2.id_match AND m.id_equipe2 = s2.id_team
             WHERE m.id_match = :id_match
             
-            AND (
-                m.date_match < CURRENT_DATE OR 
-                (m.date_match = CURRENT_DATE AND m.time_match < (CURRENT_TIME + INTERVAL 3 HOUR))
-            )
+            AND datetime(m.date_match || ' ' || m.time_match) <= datetime('now', '+3 hours')
             ORDER BY m.date_match DESC, m.time_match ASC
         ";
             //generate the message from the teams names and the score
@@ -101,7 +98,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $users = getMatchFollowers($match_id);
             //insert notif for match followers
             foreach ($users as $user) {
-                $sql = "INSERT INTO notif (msg, event_id, event_type, date_notif, id_user) VALUES (:msg, :event_id, 'match', NOW(), :id_user)";
+                $sql = "INSERT INTO notif (msg, event_id, event_type, date_notif, id_user) VALUES (:msg, :event_id, 'match', CURRENT_TIMESTAMP, :id_user)";
                 $stmt = $bd->prepare($sql);
                 $stmt->execute([
                     ':msg' => $message,

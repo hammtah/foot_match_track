@@ -37,7 +37,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 // }
 
                 // Insert a notification for match followers
-                $sql = "INSERT INTO notif (msg, event_id, event_type, date_notif, id_user) VALUES (:msg, :event_id, 'match', NOW(), :id_user)";
+                $sql = "INSERT INTO notif (msg, event_id, event_type, date_notif, id_user) VALUES (:msg, :event_id, 'match', CURRENT_TIMESTAMP, :id_user)";
                 $stmt = $bd->prepare($sql);
                 $msg = "{$match_info['team1_name']} vs. {$match_info['team2_name']} kicks off on {$match_info['date_match']} at {$match_info['time_match']}!";
                 $stmt->execute([

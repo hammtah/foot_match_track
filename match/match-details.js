@@ -146,7 +146,7 @@ async function loadMatchData() {
 
     // Find the specific match by ID
     const match = matches.find(
-      (m) => m.id_match === matchId || m.id_match === parseInt(matchId)
+      (m) => String(m.id_match) === String(matchId)
     );
     if (!match) {
       console.error(`Match with ID ${matchId} not found`);

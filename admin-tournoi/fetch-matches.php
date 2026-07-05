@@ -22,8 +22,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                    m.Nombre_spectateur, m.tournament_id , m.staduim , t1.logo_path AS home_team_logo, t2.logo_path AS away_team_logo,
                    t1.id AS home_team_id, t2.id AS away_team_id,
                    CASE 
-                       WHEN CONCAT(m.date_match, ' ', m.time_match) > NOW() THEN 'scheduled'
-                       WHEN CONCAT(m.date_match, ' ', m.time_match) <= NOW() AND CONCAT(m.date_match, ' ', m.time_match) >= DATE_SUB(NOW(), INTERVAL 2 HOUR) THEN 'in-progress'
+                       WHEN datetime(m.date_match || ' ' || m.time_match) > datetime('now') THEN 'scheduled'
+                       WHEN datetime(m.date_match || ' ' || m.time_match) <= datetime('now')
+                            AND datetime(m.date_match || ' ' || m.time_match) >= datetime('now', '-2 hours') THEN 'in-progress'
                        ELSE 'completed'
                    END AS status
             FROM _match m
